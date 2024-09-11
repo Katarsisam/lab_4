@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
 class Program
 {
@@ -33,25 +33,20 @@ class Program
         return arr;
     }
 
-    static int FindMax(List<double> arr)
-    {
-        return arr.IndexOf(arr.Max());
-    }
-
-    static void Task2(List<double> arr, int maxIndex)
+    static void Task2(List<double> arr)
     {
         Console.WriteLine("Задание 2.");
         double mulMinus = 1;
         double sumPlus = 0;
-        for (int i = 0; i < maxIndex; i++)
+        foreach (var num in arr)
         {
-            if (arr[i] < 0)
+            if (num < 0)
             {
-                mulMinus *= arr[i];
+                mulMinus *= num;
             }
             else
             {
-                sumPlus += arr[i];
+                sumPlus += num;
             }
         }
         Console.WriteLine($"Произведение отрицательных элементов: {mulMinus}");
@@ -92,60 +87,53 @@ class Program
         Console.WriteLine($"\nКоличество элементов, значение которых больше соседей: {count}");
     }
 
-    static int SumArray(List<int> arr)
-    {
-        return arr.Sum();
-    }
-
-    static void Sort(List<int> arr)
-    {
-        arr.Sort();
-    }
-
     static void Task5()
     {
         Console.WriteLine("Задание 5.");
-        int size = GetIntRandomNum(0, 10);
+        Console.Write("Введите предел n: ");
+        int n;
+        do
+        {
+            n = int.Parse(Console.ReadLine());
+            if (n < 10)
+                Console.Write("n<10, введите другой предел: ");
+        } while (n < 10);
+
+        int size = GetIntRandomNum(10, n);
         var arr = GenerateRandomIntArray(size);
-        Console.Write("Исходный массив:");
-        foreach (var item in arr)
-        {
-            Console.Write($"{item}, ");
-        }
-        int sum1 = SumArray(arr);
-        Console.WriteLine($"\nСумма элементов исходного массива: {sum1}");
+        Console.WriteLine($"Исходный массив: {string.Join(", ", arr)}");
+        int sum1 = arr.Sum();
+        Console.WriteLine($"Сумма элементов исходного массива: {sum1}");
 
-        // Здесь должна быть функция замены цифр в числах массива
+        Console.Write("Перетасованный массив: ");
+        arr = arr.OrderBy(_ => random.Next()).ToList();
+        Console.WriteLine(string.Join(", ", arr));
 
-        Sort(arr);
-        Console.Write("Отсортированный по возрастанию массив:");
-        foreach (var item in arr)
-        {
-            Console.Write($"{item}, ");
-        }
-        int sum2 = SumArray(arr);
-        Console.WriteLine($"\nСумма элементов полученного массива: {sum2}");
+        Console.Write("Отсортированный по возрастанию массив: ");
+        arr.Sort();
+        Console.WriteLine(string.Join(", ", arr));
+
+        Console.Write("Новый массив: ");
+        arr = GenerateRandomIntArray(size);
+        Console.WriteLine(string.Join(", ", arr));
+        int sum2 = arr.Sum();
+        Console.WriteLine($"Сумма элементов полученного массива: {sum2}");
 
         if (sum2 > sum1)
-        {
             Console.WriteLine($"{sum2} > {sum1}");
-        }
         else if (sum2 < sum1)
-        {
             Console.WriteLine($"{sum2} < {sum1}");
-        }
         else
-        {
             Console.WriteLine($"{sum2} = {sum1}");
-        }
     }
 
     static void Main()
     {
         var arrTask1 = Task1();
-        Task2(arrTask1, FindMax(arrTask1));
+        Task2(arrTask1);
         Task3("hello");
-        Task4(GenerateRandomIntArray(GetIntRandomNum(0, 10)));
+        Task4(GenerateRandomIntArray(10));
         Task5();
     }
 }
+
