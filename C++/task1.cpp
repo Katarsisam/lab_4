@@ -19,7 +19,7 @@ void InputTable(double LeftPoint, double RightPoint, int N)
     cout << N << " |";
     cout << "\t" << setw(10) << LeftPoint;
     cout << "\t\t" << setw(10) << RightPoint;
-    cout << "\t\t" << setw(12) << RightPoint - LeftPoint;
+    cout << "\t\t" << setw(12) << RightPoint - LeftPoint; //сама хорда
     cout << endl;
 }
 void InputNewtonMethod(double LeftPoint, double RightPoint, int N)
@@ -41,9 +41,7 @@ void InputNewtonMethod(double LeftPoint, double RightPoint, int N)
     cout << endl;
 }
 double function(double x) {
-    if(x < 0){
-        x = - x;
-    }
+    
     return 2 * log(x) + 0.5*x + 1; // Заменить функцией, корни которой мы ищем
 }
 
@@ -56,11 +54,11 @@ double df(double x)
 double chordMethod(double a, double b, double epsilon) 
 {
     int counter = 1;
-    while (abs(b - a) > epsilon) // пока отрезок больше епсилон
+    while (abs(b - a) > epsilon) // пока значение хорды больше епсилон; 
     {
         InputTable(a, b, counter);
-        a = a - (b - a) * function(a) / (function(b) - function(a));
-        b = b - (a - b) * function(b) / (function(a) - function(b));
+        a = a - (b - a) * function(a) / (function(b) - function(a)); //уравнение конца а хорды (сокращение)
+        b = b - (a - b) * function(b) / (function(a) - function(b));  //уравнение конца б хорды
         counter++;
     }
     // a, b — (i - 1)-й и i-й члены
@@ -71,9 +69,9 @@ double HalfDivisionMethod(double LeftPoint, double RightPoint, double epsilon)
 {
     int iteration = 1;
     double midPoint = 0.0;
-    if (function(LeftPoint) * function(RightPoint) < 0)// проверка на разность знаков функции на концах отрезка
+    if (function(LeftPoint) * function(RightPoint) < 0)// проверка на разность знаков функции на концах отрезка (по условию метода)
     {
-        while (abs(RightPoint - LeftPoint) > epsilon)// пока интервал больше погрешности
+        while (abs(RightPoint - LeftPoint) > epsilon)// пока интервал больше погрешности (аналог хорд)
         {
             midPoint = (RightPoint + LeftPoint) / 2;
             InputTable(LeftPoint, RightPoint, iteration);
@@ -81,6 +79,8 @@ double HalfDivisionMethod(double LeftPoint, double RightPoint, double epsilon)
             else LeftPoint = midPoint;
             //midPoint = (RightPoint + LeftPoint) / 2;
             iteration++;
+
+            //вычисление средней точки, пока разница при сближении не станет меньше эпсилон
         }
     }
     else
@@ -95,12 +95,12 @@ void findGraficalSolution(float& left, float& right) // отделяем кор�
 {
     for (float x = -1; x < 5; x += 0.01) 
     {
-        if (ceil(function(x)) == 0) 
+        if (ceil(function(x)) == 0) // Свидение значений слева и справа
         {
             left = x - 1.0;
             right = x + 1.0;
 
-        }
+        } //определение концов отрезка функции
     }
 }
 
@@ -109,9 +109,9 @@ double NewtownMethod(double x0, double epsilon)
 {
     double x;
 
-    for (int i = 1; abs(function(x0)) >= epsilon && i < 10; i++) 
+    for (int i = 1; abs(function(x0)) >= epsilon && i < 10; i++) //пока модуль функции больше погрешности + предел итерации
     {
-        x = x0 - function(x0) / df(x0);
+        x = x0 - function(x0) / df(x0); // определение нового значения для дифиринцирования функции на касательные отрезки;  
         InputNewtonMethod(x, x0, i);
         x0 = x;
     }

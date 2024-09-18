@@ -39,6 +39,14 @@ bool careful(int round_number, vector<bool> self_choices, vector<bool> enemy_cho
     return cooperationCount >= 2;
 }
 
+ 
+//1 мститиель + мститель =  пока кто-то не предаст работают вместе №1
+//2 осторожный + осторжный - Не доверяют друг-другу (меньше всего) №3
+//3 доверие + доверие =  доверяют друг-другу 
+//4 доверие + мститиель = доверяют друг-другу 
+//5 доверие + осторожный = сначала не доверяет
+//6 мститель + осторожный = мститель сначала доверяет, потом нет; осторожный больше недоверяет №2
+//1 = 3 = 4 
 int main() 
 {
     setlocale(LC_ALL, "Rus");
@@ -47,7 +55,7 @@ int main()
     mt19937 gen(rd());
     uniform_int_distribution<> distribution(100, 200);
     int total_rounds = distribution(gen);
-
+    total_rounds = 100;
     // Массивы для хранения выборов игроков
     vector<bool> player1_choices(total_rounds, false);
     vector<bool> player2_choices(total_rounds, false);
